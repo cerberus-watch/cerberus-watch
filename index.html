@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cerberus Watch - Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/ocean-dark.css">
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+</head>
+<body class="login-required">
+    <!-- Alert Container -->
+    <div id="alert-container" class="alert-container"></div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <img src="assets/images/cerberus_logo.png" alt="Cerberus Logo">
+            <h3>Cerberus Watch</h3>
+        </div>
+        <ul class="sidebar-menu">
+            <li class="sidebar-item">
+                <a href="index.html" class="sidebar-link active">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link">
+                    <i class="fas fa-shield-alt"></i> Aegis
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link">
+                    <i class="fas fa-search"></i> Recon
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link">
+                    <i class="fas fa-ghost"></i> Wraith
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link">
+                    <i class="fas fa-chart-network"></i> Oren
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link">
+                    <i class="fas fa-user-secret"></i> Mavrakis
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link">
+                    <i class="fas fa-camera"></i> Chroma
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link">
+                    <i class="fas fa-robot"></i> Agents
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link">
+                    <i class="fas fa-microchip"></i> Hardware
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link">
+                    <i class="fas fa-cog"></i> Settings
+                </a>
+            </li>
+            <li class="sidebar-item" id="admin-nav-item" style="display: none;">
+                <a href="#" class="sidebar-link">
+                    <i class="fas fa-lock"></i> Admin
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="navbar-container">
+            <button id="sidebar-toggle" class="btn btn-secondary d-md-none">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="d-flex align-items-center">
+                <span id="username-display"></span>
+                <button id="logout-btn" class="btn btn-secondary btn-sm ml-3">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+
+        <div class="container">
+            <h1 class="mt-4 mb-4">Cerberus Watch Dashboard</h1>
+            
+            <!-- Stats Overview -->
+            <div class="stats-container mb-4">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="stat-value" data-type="integer">0</div>
+                    <div class="stat-label">Active Protections</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="stat-value" data-type="integer">0</div>
+                    <div class="stat-label">Recon Operations</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="stat-value" data-type="integer">0</div>
+                    <div class="stat-label">Alerts</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="stat-value" data-type="integer">0</div>
+                    <div class="stat-label">Active Agents</div>
+                </div>
+            </div>
+            
+            <!-- System Status -->
+            <div class="row mb-4">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">System Status</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-container">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Component</th>
+                                            <th>Status</th>
+                                            <th>Last Updated</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Aegis Core</td>
+                                            <td><span class="badge badge-success">Online</span></td>
+                                            <td>Just now</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Recon Engine</td>
+                                            <td><span class="badge badge-success">Online</span></td>
+                                            <td>5 minutes ago</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Wraith Monitor</td>
+                                            <td><span class="badge badge-warning">Standby</span></td>
+                                            <td>30 minutes ago</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Oren Analysis</td>
+                                            <td><span class="badge badge-secondary">Inactive</span></td>
+                                            <td>1 hour ago</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Mavrakis Engine</td>
+                                            <td><span class="badge badge-secondary">Inactive</span></td>
+                                            <td>2 hours ago</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Chroma Vision</td>
+                                            <td><span class="badge badge-secondary">Inactive</span></td>
+                                            <td>3 hours ago</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recent Activity -->
+            <div class="row mb-4">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Recent Activity</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-container">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Time</th>
+                                            <th>Component</th>
+                                            <th>Action</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Just now</td>
+                                            <td>Aegis</td>
+                                            <td>System startup</td>
+                                            <td><span class="badge badge-success">Complete</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>5 min ago</td>
+                                            <td>Recon</td>
+                                            <td>Username scan</td>
+                                            <td><span class="badge badge-success">Complete</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>10 min ago</td>
+                                            <td>Recon</td>
+                                            <td>Domain scan</td>
+                                            <td><span class="badge badge-success">Complete</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>30 min ago</td>
+                                            <td>Wraith</td>
+                                            <td>Monitor activation</td>
+                                            <td><span class="badge badge-warning">Pending</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>1 hour ago</td>
+                                            <td>System</td>
+                                            <td>Database backup</td>
+                                            <td><span class="badge badge-success">Complete</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Admin Panel (Hidden by Default) -->
+            <div class="admin-panel">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Admin Panel</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-warning">
+                            <strong>Warning:</strong> This panel provides administrative access to Cerberus systems.
+                        </div>
+                        
+                        <h5>System Controls</h5>
+                        <div class="d-flex mb-3">
+                            <button class="btn btn-primary mr-2">Restart All Services</button>
+                            <button class="btn btn-danger mr-2">Emergency Shutdown</button>
+                            <button class="btn btn-secondary">Reset Database</button>
+                        </div>
+                        
+                        <h5>User Management</h5>
+                        <div class="table-container">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Username</th>
+                                        <th>Role</th>
+                                        <th>Last Login</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>admin</td>
+                                        <td>Administrator</td>
+                                        <td>Just now</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-secondary">Edit</button>
+                                            <button class="btn btn-sm btn-danger">Delete</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>user1</td>
+                                        <td>Standard</td>
+                                        <td>Yesterday</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-secondary">Edit</button>
+                                            <button class="btn btn-sm btn-danger">Delete</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <h5>Add New User</h5>
+                        <form>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label class="form-label">Username</label>
+                                        <input type="text" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label class="form-label">Password</label>
+                                        <input type="password" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label class="form-label">Role</label>
+                                        <select class="form-control">
+                                            <option>Administrator</option>
+                                            <option>Standard</option>
+                                            <option>Read-only</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col d-flex align-items-end">
+                                    <button type="submit" class="btn btn-primary">Add User</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Admin Access Code Input (Hidden in Plain Sight) -->
+            <div class="mt-5 pt-5">
+                <input type="text" id="admin-code" class="form-control" placeholder="Search..." style="opacity: 0.1;">
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/dashboard.js"></script>
+</body>
+</html>
