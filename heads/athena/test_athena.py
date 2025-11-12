@@ -4,29 +4,47 @@ from heads.athena.main import app
 
 client = TestClient(app)
 
-def test_analyze_endpoint_no_input():
+def test_analyze_endpoint_no_name():
     """
-    **Placeholder Test**
-    Tests the /analyze endpoint with no input data.
-    This test will need to be updated when the real analysis logic is implemented.
+    Tests the /analyze endpoint with no name provided.
+    It should return a 'Verification Failed' safety score.
     """
-    response = client.post("/analyze", json={})
+    response = client.post("/analyze", json={"phone": "123-456-7890"})
     assert response.status_code == 200
-    assert response.json() == {"error": "No input provided for analysis."}
+    assert response.json() == {
+        "safety_score": "Verification Failed",
+        "summary": "A name is required for identity verification."
+    }
 
-def test_analyze_endpoint_with_input():
+def test_analyze_endpoint_verified_user():
     """
-    **Placeholder Test**
-    Tests the /analyze endpoint with valid input data.
-    This test currently only checks the placeholder response and will need to
-    be updated with more sophisticated assertions when the real analysis
-    logic is implemented.
+    Tests the /analyze endpoint with a name that should return a 'verified' status.
     """
     response = client.post("/analyze", json={"name": "John Doe"})
     assert response.status_code == 200
+    json_response = response.json()
+    assert json_response["safety_score"] == "Review Recommended"
+    assert "Identity verified for John Doe" in json_response["summary"]
+
+def test_analyze_endpoint_partially_verified_user():
+    """
+    Tests the /analyze endpoint with a name that should return a 'partially_verified' status.
+    """
+    response = client.post("/analyze", json={"name": "Jane Smith"})
+    assert response.status_code == 200
+    json_response = response.json()
+    assert json_response["safety_score"] == "Review Recommended"
+    assert "Identity partially_verified for Jane Smith" in json_response["summary"]
+
+def test_analyze_endpoint_unverified_user():
+    """
+    Tests the /analyze endpoint with a name that should return an 'unverified' status.
+    """
+    response = client.post("/analyze", json={"name": "Unknown Person"})
+    assert response.status_code == 200
     assert response.json() == {
-        "safety_score": "Review Recommended",
-        "summary": "Based on the information provided, we recommend reviewing the full details. The subject has a limited online presence, which can make verification difficult. No immediate red flags were identified in the publicly available information."
+        "safety_score": "Verification Failed",
+        "summary": "Could not verify identity for Unknown Person. No public profiles found."
     }
 
 def test_athena_html_loads():
