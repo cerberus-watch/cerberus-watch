@@ -120,7 +120,7 @@
     <div id="results-screen" class="container hidden">
         <h1>Risk Advisory</h1>
         <div id="safety-score"></div>
-        <div id="summary"></div>
+        <div id="summary" style="text-align: left; margin-top: 20px;"></div>
         <button class="button" onclick="startOver()">Start Over</button>
     </div>
 
@@ -165,6 +165,7 @@
             document.getElementById('summary').innerHTML = '<p>Please wait while we analyze the provided information.</p>';
 
             try {
+                console.log("Fetching from /analyze");
                 const response = await fetch('/analyze', {
                     method: 'POST',
                     headers: {

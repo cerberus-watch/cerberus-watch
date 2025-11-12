@@ -24,7 +24,8 @@ def test_analyze_endpoint_verified_user():
     assert response.status_code == 200
     json_response = response.json()
     assert json_response["safety_score"] == "Review Recommended"
-    assert "Identity verified for John Doe" in json_response["summary"]
+    assert "Identity verified for John Doe." in json_response["summary"]
+    assert "Public profiles on LinkedIn and Twitter show a consistent work history." in json_response["summary"]
 
 def test_analyze_endpoint_partially_verified_user():
     """
@@ -34,7 +35,8 @@ def test_analyze_endpoint_partially_verified_user():
     assert response.status_code == 200
     json_response = response.json()
     assert json_response["safety_score"] == "Review Recommended"
-    assert "Identity partially_verified for Jane Smith" in json_response["summary"]
+    assert "Identity partially_verified for Jane Smith." in json_response["summary"]
+    assert "A single public profile was found on Facebook." in json_response["summary"]
 
 def test_analyze_endpoint_unverified_user():
     """

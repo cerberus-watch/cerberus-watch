@@ -1,12 +1,20 @@
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from typing import Optional
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
+app.mount("/static", StaticFiles(directory="heads/athena"), name="static")
+
+@app.get("/")
+async def read_index():
+    return FileResponse('heads/athena/athena.html')
+
 origins = [
-    "null",
+    "http://127.0.0.1:8000",
 ]
 
 app.add_middleware(
@@ -26,32 +34,33 @@ class AnalysisInput(BaseModel):
 class AthenaAnalyzer:
     def __init__(self, analysis_input: AnalysisInput):
         self.input = analysis_input
+        self.search_name = self.input.name.lower() if self.input.name else None
+
+        # Mock database of online profiles with richer background info.
+        self.mock_profiles = {
+            "john doe": {
+                "status": "verified",
+                "verified_on": ["LinkedIn", "Twitter"],
+                "background_summary": "Public profiles on LinkedIn and Twitter show a consistent work history. No public posts containing aggressive language or concerning affiliations were found."
+            },
+            "jane smith": {
+                "status": "partially_verified",
+                "verified_on": ["Facebook"],
+                "background_summary": "A single public profile was found on Facebook. The profile is new with limited activity, making a comprehensive background assessment difficult."
+            },
+        }
 
     def verify_identity(self):
         """
         **Placeholder Implementation**
-        This function simulates identity verification. Since the 'Recon' head is
-        not yet implemented, this function uses a hardcoded dictionary to mimic
-        searching for a person of interest.
-
-        A full implementation would involve extensive OSINT and cross-referencing.
+        This function simulates identity verification by checking against a mock database.
         """
         print("Step 1: Verifying identity...")
-
-        if not self.input.name:
-            # For this placeholder, we'll just focus on the name field.
+        if not self.search_name:
             return {"status": "unverified", "message": "A name is required for identity verification."}
 
-        # Mock database of online profiles.
-        mock_profiles = {
-            "john doe": {"verified_on": ["LinkedIn", "Twitter"], "status": "verified"},
-            "jane smith": {"verified_on": ["Facebook"], "status": "partially_verified"},
-        }
-
-        search_name = self.input.name.lower()
-
-        if search_name in mock_profiles:
-            profile = mock_profiles[search_name]
+        profile = self.mock_profiles.get(self.search_name)
+        if profile:
             message = f"Identity {profile['status']} for {self.input.name}. Found profiles on: {', '.join(profile['verified_on'])}."
             return {"status": profile['status'], "message": message}
         else:
@@ -61,16 +70,15 @@ class AthenaAnalyzer:
     def gather_background_info(self):
         """
         **Placeholder Implementation**
-        This function is a placeholder for the background information gathering logic.
-        A full implementation would involve:
-        - Integrating with the 'Recon' head to perform OSINT scans.
-        - Scraping and analyzing public social media profiles.
-        - Searching for publicly available records.
-        - Filtering all gathered information to be strictly relevant to safety, as per the Ethical Charter.
+        This function simulates background info gathering by checking against a mock database.
         """
         print("Step 2: Gathering background information...")
-        print("Background information gathered (placeholder).")
-        return {"background_info": "Subject has a limited online presence."}
+        profile = self.mock_profiles.get(self.search_name)
+        if profile:
+            return {"background_info": profile["background_summary"]}
+        else:
+            # This case should ideally not be hit if verification runs first.
+            return {"background_info": "No background information could be gathered."}
 
     def analyze_risk(self, background_info):
         """
@@ -86,7 +94,7 @@ class AthenaAnalyzer:
         print("Risk analysis complete (placeholder).")
         return {
             "safety_score": "Review Recommended",
-            "summary": "Based on the information provided, we recommend reviewing the full details. The subject has a limited online presence, which can make verification difficult. No immediate red flags were identified in the publicly available information."
+            "summary": "This is a placeholder risk analysis. A full implementation would use an LLM to analyze the gathered information for potential red flags."
         }
 
 @app.post("/analyze")
@@ -112,9 +120,9 @@ async def analyze(analysis_input: AnalysisInput):
     background_info = analyzer.gather_background_info()
 
     # Step 3: Risk Analysis & Safety Score
-    risk_analysis_result = analyzer.analyze_risk(background_info)
+    risk_analysis_result = analyzer.analyze_risk(background_info["background_info"])
 
-    # Add the identity verification message to the final result
-    risk_analysis_result["summary"] = f"{identity_result['message']} {risk_analysis_result['summary']}"
+    # Combine the verification and background info for the final summary
+    risk_analysis_result["summary"] = f"{identity_result['message']} {background_info['background_info']}"
 
     return risk_analysis_result
