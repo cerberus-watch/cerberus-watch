@@ -83,19 +83,23 @@ class AthenaAnalyzer:
     def analyze_risk(self, background_info):
         """
         **Placeholder Implementation**
-        This function is a placeholder for the risk analysis and safety score generation.
-        A full implementation would involve:
-        - Integrating with the 'Aegis' head to use its LLM capabilities.
-        - Creating a sophisticated prompt that instructs the LLM to analyze the gathered information for specific red flags related to safety and coercion, while adhering to the Ethical Charter.
-        - Developing a scoring algorithm that translates the LLM's analysis into a clear, probabilistic safety score.
-        - Generating a concise, non-alarming summary of the findings.
+        This function simulates a risk analysis based on keywords in the
+        background information. A full implementation would use an LLM.
         """
         print("Step 3: Analyzing risk...")
+
+        if "consistent work history" in background_info and "No public posts containing aggressive language" in background_info:
+            score = "Good"
+            summary = "The individual has a consistent and verifiable public presence with no identifiable risk factors in their public communications."
+        elif "limited activity" in background_info:
+            score = "Review Recommended"
+            summary = "The individual has a limited online presence, which makes a comprehensive safety assessment difficult. Caution is advised."
+        else:
+            score = "Caution Advised"
+            summary = "Could not form a comprehensive safety assessment based on the information available."
+
         print("Risk analysis complete (placeholder).")
-        return {
-            "safety_score": "Review Recommended",
-            "summary": "This is a placeholder risk analysis. A full implementation would use an LLM to analyze the gathered information for potential red flags."
-        }
+        return {"safety_score": score, "summary": summary}
 
 @app.post("/analyze")
 async def analyze(analysis_input: AnalysisInput):
@@ -122,7 +126,14 @@ async def analyze(analysis_input: AnalysisInput):
     # Step 3: Risk Analysis & Safety Score
     risk_analysis_result = analyzer.analyze_risk(background_info["background_info"])
 
-    # Combine the verification and background info for the final summary
-    risk_analysis_result["summary"] = f"{identity_result['message']} {background_info['background_info']}"
+    # Combine all information for the final summary
+    final_summary = (
+        f"{identity_result['message']}<br><br>"
+        f"{background_info['background_info']}<br><br>"
+        f"<b>Risk Analysis:</b> {risk_analysis_result['summary']}"
+    )
 
-    return risk_analysis_result
+    return {
+        "safety_score": risk_analysis_result["safety_score"],
+        "summary": final_summary
+    }

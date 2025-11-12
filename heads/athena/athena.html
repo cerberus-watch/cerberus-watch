@@ -185,8 +185,16 @@
 
                 const results = await response.json();
 
+                // Determine color based on safety score
+                let scoreColor = '#d1b894'; // Soft Amber for 'Review Recommended'
+                if (results.safety_score === 'Good') {
+                    scoreColor = '#5a8e5a'; // Muted Green
+                } else if (results.safety_score === 'Caution Advised') {
+                    scoreColor = '#9c4f4f'; // Muted Red
+                }
+
                 // Display results
-                document.getElementById('safety-score').innerHTML = `<h2>Safety Score: <span style="color: #d1b894;">${results.safety_score}</span></h2>`;
+                document.getElementById('safety-score').innerHTML = `<h2>Safety Score: <span style="color: ${scoreColor};">${results.safety_score}</span></h2>`;
                 document.getElementById('summary').innerHTML = `<p>${results.summary}</p>`;
 
             } catch (error) {

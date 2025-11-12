@@ -16,27 +16,27 @@ def test_analyze_endpoint_no_name():
         "summary": "A name is required for identity verification."
     }
 
-def test_analyze_endpoint_verified_user():
+def test_analyze_endpoint_good_score():
     """
-    Tests the /analyze endpoint with a name that should return a 'verified' status.
+    Tests the /analyze endpoint for a user who should receive a 'Good' safety score.
     """
     response = client.post("/analyze", json={"name": "John Doe"})
     assert response.status_code == 200
     json_response = response.json()
-    assert json_response["safety_score"] == "Review Recommended"
-    assert "Identity verified for John Doe." in json_response["summary"]
-    assert "Public profiles on LinkedIn and Twitter show a consistent work history." in json_response["summary"]
+    assert json_response["safety_score"] == "Good"
+    assert "<b>Risk Analysis:</b>" in json_response["summary"]
+    assert "consistent and verifiable public presence" in json_response["summary"]
 
-def test_analyze_endpoint_partially_verified_user():
+def test_analyze_endpoint_review_recommended_score():
     """
-    Tests the /analyze endpoint with a name that should return a 'partially_verified' status.
+    Tests the /analyze endpoint for a user who should receive a 'Review Recommended' safety score.
     """
     response = client.post("/analyze", json={"name": "Jane Smith"})
     assert response.status_code == 200
     json_response = response.json()
     assert json_response["safety_score"] == "Review Recommended"
-    assert "Identity partially_verified for Jane Smith." in json_response["summary"]
-    assert "A single public profile was found on Facebook." in json_response["summary"]
+    assert "<b>Risk Analysis:</b>" in json_response["summary"]
+    assert "limited online presence" in json_response["summary"]
 
 def test_analyze_endpoint_unverified_user():
     """
