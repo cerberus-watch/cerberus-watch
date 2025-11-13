@@ -1,0 +1,20 @@
+# Git
+.git
+.github
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Testing
+.pytest_cache/
+
+# Logs
+*.log
+
+# Docker
+.dockerignore
+Dockerfile
+docker-compose.yml

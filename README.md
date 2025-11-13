@@ -41,30 +41,30 @@ cerberus-watch/
 └── docs/               # Documentation
 ```
 
-## 🚀 Getting Started
+## 🚀 Running with Docker
 
-1. **Clone this repository**
+This project is containerized using Docker and managed with Docker Compose. This is the recommended way to run the application for both development and production.
+
+### Prerequisites
+- Docker Engine
+- Docker Compose
+
+### Instructions
+
+1. **Clone the repository:**
    ```bash
    git clone https://github.com/your-username/cerberus-watch.git
    cd cerberus-watch
    ```
 
-2. **Set up the core Aegis infrastructure**
+2. **Build and run the services:**
    ```bash
-   cd heads/aegis
-   # Follow the setup instructions in the Aegis README
+   docker compose up --build
    ```
+   This command will build the Docker image and start the **Athena** service. You can access the Athena UI by navigating to **http://localhost:8000** in your web browser.
 
-3. **Configure additional heads as needed**
-   Each head has its own setup instructions in its respective directory.
-
-## 🌐 Dashboard
-
-The Cerberus dashboard provides a unified interface for interacting with all heads of the system. To access the dashboard:
-
-1. Ensure the Aegis head is running
-2. Navigate to `http://localhost:3000` in your browser
-3. Log in with your credentials
+> **Note on Docker Hub Rate Limits:**
+> The initial build process may fail with a `429 Too Many Requests` error. This is due to Docker Hub's pull rate limits for anonymous users. To resolve this, simply authenticate with your Docker Hub account by running `docker login` in your terminal and then re-run the `docker compose up` command.
 
 ## 🔒 Security Features
 

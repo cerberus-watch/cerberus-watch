@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  athena:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: athena_service
+    # The HEAD_NAME environment variable tells the Dockerfile which application to run.
+    environment:
+      - HEAD_NAME=athena
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
